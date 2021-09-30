@@ -91,9 +91,11 @@ cpdef peak_valley_pivots(double [:] X,
     # This saves (t_n - 1) subtractions.
     up_thresh += 1
     down_thresh += 1
+    current_price = 0
 
     for t in range(1, t_n):
         x = X[t]
+        current_price = x
         r = x / last_pivot_x
 
         if trend == -1:
@@ -116,9 +118,11 @@ cpdef peak_valley_pivots(double [:] X,
                 last_pivot_t = t
 
     if last_pivot_t == t_n-1:
-        pivots[last_pivot_t] = trend
+        # higher high
+        pivots[last_pivot_t] = current_price
     elif pivots[t_n-1] == 0:
-        pivots[t_n-1] = -trend
+        # lower low
+        pivots[t_n-1] = current_price
 
     return pivots
 
