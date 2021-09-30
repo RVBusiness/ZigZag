@@ -78,7 +78,7 @@ cpdef peak_valley_pivots(double [:] X,
                                                      down_thresh)
         int_t t_n = len(X)
         ndarray[int_t, ndim=1] pivots = np.zeros(t_n, dtype=np.int_)
-        prices = np.zeros(t_n, dtype=np.double_)
+        prices = np.zeros(t_n, dtype=np.double)
         int_t trend = -initial_pivot
         int_t last_pivot_t = 0
         double last_pivot_x = X[0]
@@ -96,6 +96,7 @@ cpdef peak_valley_pivots(double [:] X,
 
     for t in range(1, t_n):
         x = X[t]
+        global current_price
         current_price = x
         r = x / last_pivot_x
 
@@ -125,7 +126,7 @@ cpdef peak_valley_pivots(double [:] X,
         # lower low
         prices[t_n-1] = current_price
 
-    return pivots
+    return prices
 
 
 @cython.boundscheck(False)
